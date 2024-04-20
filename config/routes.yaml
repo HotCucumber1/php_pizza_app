@@ -1,3 +1,29 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+index:
+    path: /
+    methods: GET
+    controller: App\Controller\UserController::index
+
+add_user:
+    path: /add_user
+    methods: GET
+    controller: App\Controller\UserController::login
+
+upload_user:
+    path: /user_upload
+    methods: POST
+    controller: App\Controller\UserController::addNewUser
+
+show_user:
+    path: /show_user
+    methods: GET
+    controller: App\Controller\UserController::showUser
+
+update_user:
+    path: /update_user
+    methods: POST
+    controller: App\Controller\UserController::updateUser
+
+delete_user:
+    path: /delete_user
+    methods: GET
+    controller: App\Controller\UserController::deleteUser
