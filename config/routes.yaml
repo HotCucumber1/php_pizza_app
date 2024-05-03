@@ -20,7 +20,7 @@ show_user:
 
 update_user:
     path: /update_user
-    methods: POST
+    methods: POST|GET
     controller: App\Controller\UserController::updateUser
 
 delete_user:
