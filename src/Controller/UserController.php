@@ -63,7 +63,8 @@ class UserController extends AbstractController
         {
             if ($request->files->get('avatar_path'))
             {
-                $this->saveAvatar($request->files->get('avatar_path'), $last);
+                $avatarPath = $this->saveAvatar($request->files->get('avatar_path'), $last);
+                $this->table->saveAvatarPathToDB($avatarPath, $last);
             }
             $redirectUrl = "/show_user?user_id={$last}";
             $this->redirectToPage($redirectUrl);
@@ -111,11 +112,10 @@ class UserController extends AbstractController
                 // не работает отображение
                 if ($request->files->get('avatar_path'))
                 {
-                    var_dump($request->files->get('avatar_path'));
-
-                    echo "<br>";
-                    $this->saveAvatar($request->files->get('avatar_path'), $id);
+                    $avatarPath = $this->saveAvatar($request->files->get('avatar_path'), $id);
+                    $this->table->saveAvatarPathToDB($avatarPath, $id);
                 }
+                $user = $this->table->findUser($id);
                 $content = PhpTemplateEngine::renderPHP('user_page.php', $user);
                 return new Response($content);
             }
@@ -147,42 +147,24 @@ class UserController extends AbstractController
         die();
     }
 
-    private function saveAvatar(UploadedFile $avatar, int $id): void
+    private function saveAvatar(UploadedFile $avatar, int $id): ?string
     {
         if ($avatar->isValid()) {
             $type = $avatar->getClientMimeType();
             $fileName = "avatar" . "{$id}" . "." . $avatar->getClientOriginalExtension();
-
-            echo "<br>";
-            var_dump($avatar);
 
             if ($type === self::PNG ||
                 $type === self::JPEG ||
                 $type === self::GIF)
             {
                 $avatarPath = self::SAVE_DIR . $fileName;
-                /*if (move_uploaded_file($avatar->getPathname(), $avatarPath))
-                    echo "Ok";
-                else
-                    echo "NOT OK";*/
                 $avatar->move(self::SAVE_DIR, $fileName);
-                if (file_exists($avatarPath))
-                {
-                    echo "Ok";
-                }
-                else
-                {
-                    echo "Not OK";
-                }
-                echo "<br>" . $avatar->getPathname();
-                echo "<br>" . $avatar->getPath();
-                echo "<br>" . $avatarPath;
-
-                $this->table->saveAvatarPathToDB($avatarPath, $id);  // вытянуть из этой функции наружу
+                return "." . $avatarPath;
             }
             else
                 throw new \TypeError("Wrong type of image");
         }
+        return null;
     }
 
     private function changeUserData(User $user, Request $data): void
