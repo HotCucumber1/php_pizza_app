@@ -8,5 +8,5 @@ interface UserRepositoryInterface
     public function findUser(int $userId): ?User;
     public function updateUser(User $user): void;
     public function deleteUser(int $id): void;
-    public function saveAvatarPathToDB(string $avatar, int $id): void;
+    public function saveAvatarPathToDB(User $user): void;
 }

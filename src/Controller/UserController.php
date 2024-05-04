@@ -2,38 +2,28 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use App\Model\UserRepositoryInterface;
-use App\Infrastructure\UserRepository;
-use App\Utils\PhpTemplateEngine;
-use App\Connection\ConnectionProvider;
-use App\Exceptions\DataBaseException;
 use App\Model\User;
-
-// перименовал классы
-// раскидал по папкам
-// вытащил из функции ?
-// починил аватарку ?
+use App\Utils\PhpTemplateEngine;
 
 
 class UserController extends AbstractController
 {
-    const PNG = 'image/png';
-    const JPEG = 'image/jpeg';
-    const GIF = 'image/gif';
-    const SAVE_DIR = "./uploads/";
+    private const PNG = 'image/png';
+    private const JPEG = 'image/jpeg';
+    private const GIF = 'image/gif';
+    private const SAVE_DIR = './uploads/';
 
-    private UserRepositoryInterface $table;
+    public function __construct(
+        private readonly UserRepositoryInterface $repository,
+        /*private string $saveDir,*/
+    ) {}
 
-    public function __construct()  // можно  попробовать передать Interface
-    {
-        $connectionParams = ConnectionProvider::getConnectionParams();
-        $connection = ConnectionProvider::connectDatabase($connectionParams);
-        $this->table = new UserRepository($connection);
-    }
     public function index(): Response
     {
         return $this->redirectToRoute('add_user');
@@ -45,7 +35,7 @@ class UserController extends AbstractController
         return new Response($content);
     }
 
-    public function addNewUser(Request $request): void
+    public function addNewUser(Request $request): Response
     {
         $user = new User(
             null,
@@ -58,113 +48,98 @@ class UserController extends AbstractController
             ($request->get('phone') == '') ? null : $request->get('phone'),
             null,
         );
-        $last = $this->table->addUser($user);
-        if ($last)
+        $lastUserId = $this->repository->addUser($user);
+
+        if ($request->files->get('avatar_path'))
         {
-            if ($request->files->get('avatar_path'))
-            {
-                $avatarPath = $this->saveAvatar($request->files->get('avatar_path'), $last);
-                $this->table->saveAvatarPathToDB($avatarPath, $last);
-            }
-            $redirectUrl = "/show_user?user_id={$last}";
-            $this->redirectToPage($redirectUrl);
+            $avatarPath = $this->saveAvatar($request->files->get('avatar_path'), $lastUserId);
+
+            $user = $this->repository->findUser($lastUserId);
+            $user->setAvatarPath($avatarPath);
+            $this->repository->saveAvatarPathToDB($user);
         }
+        return $this->redirectToRoute('show_user', ['user_id' => $lastUserId]);
     }
 
-    public function showUser(Request $request): ?Response
+    public function showUser(Request $request): Response
     {
-        try
+        $userId = $request->get('user_id') ?? null;
+        if (is_null($userId))
         {
-            $id = $request->get('user_id') ?? null;
-            if ($id === null)
-                throw new DataBaseException('Parameter user_id is not defined');
-            $user = $this->table->findUser($id);
-            if (!is_null($user))
-            {
-                $content = PhpTemplateEngine::renderPHP('user_page.php', $user);
-                return new Response($content);
-            }
-            else
-            {
-                throw new DataBaseException("User not found");
-            }
+            throw new BadRequestException('Parameter user_id is not defined');
         }
-        catch (DataBaseException $e)
+        $user = $this->repository->findUser($userId);
+        if (!is_null($user))
         {
-            echo $e->getMessage();
-            return null;
+            $content = PhpTemplateEngine::renderPHP('user_page.php', $user);
+            return new Response($content);
+        }
+        else
+        {
+            throw new BadRequestException("User not found");
         }
     }
 
     public function updateUser(Request $request): ?Response
     {
-        try {
-            $id = $request->get('user_id') ?? null;
-            if ($id === null)
-                throw new DataBaseException('Parameter userId is not defined');
-
-            $user = $this->table->findUser($id);
-            if (!is_null($user))
-            {
-                $this->changeUserData($user, $request);
-                $this->table->updateUser($user);
-
-                // не работает отображение
-                if ($request->files->get('avatar_path'))
-                {
-                    $avatarPath = $this->saveAvatar($request->files->get('avatar_path'), $id);
-                    $this->table->saveAvatarPathToDB($avatarPath, $id);
-                }
-                $user = $this->table->findUser($id);
-                $content = PhpTemplateEngine::renderPHP('user_page.php', $user);
-                return new Response($content);
-            }
-            else
-            {
-                throw new DataBaseException("User not found");
-            }
+        $userId = $request->get('user_id') ?? null;
+        if (is_null($userId))
+        {
+            throw new BadRequestException('Parameter userId is not defined');
         }
-        catch (DataBaseException $e) {
-            echo $e->getMessage();
-            return null;
+
+        $user = $this->repository->findUser($userId);
+        if (is_null($user))
+        {
+            throw new BadRequestException("User not found");
         }
+
+        $this->changeUserData($user, $request);
+        if ($request->files->get('avatar_path'))
+        {
+            $avatarPath = $this->saveAvatar($request->files->get('avatar_path'), $userId);
+            $user->setAvatarPath($avatarPath);
+        }
+        $this->repository->updateUser($user);
+
+        $content = PhpTemplateEngine::renderPHP('user_page.php', $user);
+        return new Response($content);
     }
 
     public function deleteUser(Request $request): Response
     {
-        $id = $request->get('user_id') ?? null;
-        if ($id === null)
-            throw new DataBaseException('Parameter userId is not defined');
-        $this->table->deleteUser($id);
+        $userId = $request->get('user_id') ?? null;
+        if (is_null($userId))
+        {
+            throw new BadRequestException('Parameter userId is not defined');
+        }
+        $this->repository->deleteUser($userId);
 
         $content = PhpTemplateEngine::renderHTML('delete_status.html');
         return new Response($content);
     }
 
-    private function redirectToPage(string $redirectUrl): void
+    private function saveAvatar(UploadedFile $avatar, int $userId): ?string
     {
-        header('Location: ' . $redirectUrl, true, 303);
-        die();
-    }
-
-    private function saveAvatar(UploadedFile $avatar, int $id): ?string
-    {
-        if ($avatar->isValid()) {
-            $type = $avatar->getClientMimeType();
-            $fileName = "avatar" . "{$id}" . "." . $avatar->getClientOriginalExtension();
-
-            if ($type === self::PNG ||
-                $type === self::JPEG ||
-                $type === self::GIF)
-            {
-                $avatarPath = self::SAVE_DIR . $fileName;
-                $avatar->move(self::SAVE_DIR, $fileName);
-                return "." . $avatarPath;
-            }
-            else
-                throw new \TypeError("Wrong type of image");
+        if (!$avatar->isValid())
+        {
+            return null;
         }
-        return null;
+        $type = $avatar->getClientMimeType();
+        $fileName = "avatar" . "{$userId}" . "." . $avatar->getClientOriginalExtension();
+
+        if ($type === self::PNG ||
+            $type === self::JPEG ||
+            $type === self::GIF)
+        {
+            $avatarPath = self::SAVE_DIR . $fileName;
+            $avatar->move(self::SAVE_DIR, $fileName);
+            return "." . $avatarPath;
+        }
+        else
+        {
+            throw new \TypeError("Wrong type of image");
+        }
     }
 
     private function changeUserData(User $user, Request $data): void
@@ -176,6 +151,5 @@ class UserController extends AbstractController
         $user->setBirthDate($data->get('birth_date'));
         $user->setEmail($data->get('email'));
         $user->setPhone(($data->get('phone') === '') ? null : $data->get('phone'));
-        $user->setAvatarPath(null);
     }
 }

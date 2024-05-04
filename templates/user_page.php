@@ -5,7 +5,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>UserPage</title>
 </head>
-<body>
+<body style="background-color: lightslategrey">
     <form action="/update_user?user_id=<?= htmlentities($user->getUserId()) ?>" method="post" enctype="multipart/form-data" role="form" style="margin-inline: auto;
                                                               margin-top: 100px;
                                                               width: 600px;
@@ -46,7 +46,7 @@
             <input type="hidden" name="MAX_FILE_SIZE" value="30000000"/>
             <input name="avatar_path" id="avatar_path" type="file" accept="image/png, image/jpeg, image/gif" class="form-control">
             <label for="avatar" style="display: block">Current avatar:</label>
-            <img id="avatar" src="<?= htmlentities($user->getAvatarPath()) ?>" alt="Avatar" style="height: 100px; width: 100px">
+            <img id="avatar" src="<?= htmlentities($user->getAvatarPath()) ?>" alt="Avatar" style="height: 100px; width: 100px; border-radius: 5px">
         </div>
         <button type="submit" class="btn btn-primary" style="margin-top: 20px;">Update</button>
         <a href="/delete_user?user_id=<?= htmlentities($user->getUserId()) ?>" class="btn btn-primary" style="margin-top: 20px;">Delete this user</a>

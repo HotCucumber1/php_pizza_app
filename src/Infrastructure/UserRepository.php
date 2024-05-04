@@ -1,13 +1,22 @@
 <?php
+
 namespace App\Infrastructure;
 
+use App\Connection\ConnectionProvider;
 use App\Model\User;
 use App\Model\UserRepositoryInterface;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function __construct(private \PDO $connection) {}
+    private \PDO $connection;
+
+    public function __construct()
+    {
+        $connectionParams = ConnectionProvider::getConnectionParams();
+        $this->connection = ConnectionProvider::connectDatabase($connectionParams);
+    }
 
     public function addUser(User $user): int
     {
@@ -67,26 +76,30 @@ class UserRepository implements UserRepositoryInterface
         ]);
 
         $userData = $request->fetch(\PDO::FETCH_ASSOC);
-        if ($userData) {
+        if ($userData)
             return $this->createUser($userData);
-        }
         return null;
     }
 
     public function updateUser(User $user): void
     {
+        if (is_null($this->findUser($user->getUserId())))
+        {
+            throw new BadRequestException("User does not exist");
+        }
         $query = "UPDATE
-                        user
-                      SET
-                        first_name = :first_name,
-                        last_name = :last_name,
-                        middle_name = :middle_name,
-                        gender = :gender,
-                        birth_date = :birth_date,
-                        email = :email,
-                        phone = :phone
-                      WHERE
-                        user_id = :user_id;";
+                      user
+                  SET
+                      first_name = :first_name,
+                      last_name = :last_name,
+                      middle_name = :middle_name,
+                      gender = :gender,
+                      birth_date = :birth_date,
+                      email = :email,
+                      avatar_path = :avatar_path,
+                      phone = :phone
+                  WHERE
+                      user_id = :user_id;";
         $request = $this->connection->prepare($query);
         $request->execute([
             ':first_name' => $user->getFirstName(),
@@ -95,6 +108,7 @@ class UserRepository implements UserRepositoryInterface
             ':gender' => $user->getGender(),
             ':birth_date' => $user->getBirthDate(),
             ':email' => $user->getEmail(),
+            ':avatar_path' => $user->getAvatarPath(),
             ':phone' => $user->getPhone(),
             ':user_id' => $user->getUserId()
         ]);
@@ -112,7 +126,7 @@ class UserRepository implements UserRepositoryInterface
         ]);
     }
 
-    public function saveAvatarPathToDB(string $avatar, int $id): void
+    public function saveAvatarPathToDB(User $user): void
     {
         $query = "UPDATE
                     user
@@ -122,8 +136,8 @@ class UserRepository implements UserRepositoryInterface
                     user_id = :id;";
         $request = $this->connection->prepare($query);
         $request->execute([
-            ':avatar' => $avatar,
-            ':id' => $id,
+            ':avatar' => $user->getAvatarPath(),
+            ':id' => $user->getUserId(),
         ]);
     }
 
