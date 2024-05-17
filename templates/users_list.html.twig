@@ -1,0 +1,34 @@
+{% extends "base.html.twig" %}
+
+{% block head %}
+    {{ parent() }}
+    <link href="/styles/users_list_styles.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Users{% endblock %}
+
+{% block users_list %}
+    <table class="users table table-striped table-bordered table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.userId }}</td>
+                <td>
+                    <a href="{{ path("show_user", {user_id: user.userId}) }}">{{ user.firstName }} {{ user.lastName }}</a>
+                </td>
+                <td>
+                    <a href="{{ path("delete_user", {user_id: user.userId}) }}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -22,7 +22,8 @@ class UserController extends AbstractController
     public function __construct(
         private readonly UserRepositoryInterface $repository,
         /*private string $saveDir,*/
-    ) {}
+    )
+    {}
 
     public function index(): Response
     {
@@ -31,8 +32,7 @@ class UserController extends AbstractController
 
     public function login(): Response
     {
-        $content = PhpTemplateEngine::renderHTML('add_user_form.html');
-        return new Response($content);
+        return $this->render("add_user_form.html.twig");
     }
 
     public function addNewUser(Request $request): Response
@@ -69,15 +69,14 @@ class UserController extends AbstractController
             throw new BadRequestException('Parameter user_id is not defined');
         }
         $user = $this->repository->findUser($userId);
-        if (!is_null($user))
-        {
-            $content = PhpTemplateEngine::renderPHP('user_page.php', $user);
-            return new Response($content);
-        }
-        else
+        if (is_null($user))
         {
             throw new BadRequestException("User not found");
+
         }
+        return $this->render("user_page.html.twig", [
+            "user" => $user
+        ]);
     }
 
     public function updateUser(Request $request): ?Response
@@ -102,8 +101,9 @@ class UserController extends AbstractController
         }
         $this->repository->updateUser($user);
 
-        $content = PhpTemplateEngine::renderPHP('user_page.php', $user);
-        return new Response($content);
+        return $this->render("user_page.html.twig", [
+            "user" => $user
+        ]);
     }
 
     public function deleteUser(Request $request): Response
@@ -115,8 +115,19 @@ class UserController extends AbstractController
         }
         $this->repository->deleteUser($userId);
 
-        $content = PhpTemplateEngine::renderHTML('delete_status.html');
-        return new Response($content);
+        return $this->render("delete_page.html.twig");
+    }
+
+    public function showAllUsers(Request $request): Response
+    {
+        $users = $this->repository->getUsers();
+        if (!$users)
+        {
+            throw new BadRequestException('Users not found');
+        }
+        return $this->render("users_list.html.twig", [
+            "users" => $users
+        ]);
     }
 
     private function saveAvatar(UploadedFile $avatar, int $userId): ?string

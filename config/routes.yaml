@@ -27,3 +27,8 @@ delete_user:
     path: /delete_user
     methods: GET
     controller: App\Controller\UserController::deleteUser
+
+all_users:
+    path: /all_users
+    methods: GET
+    controller: App\Controller\UserController::showAllUsers

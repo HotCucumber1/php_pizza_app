@@ -76,9 +76,25 @@ class UserRepository implements UserRepositoryInterface
         ]);
 
         $userData = $request->fetch(\PDO::FETCH_ASSOC);
-        if ($userData)
-            return $this->createUser($userData);
-        return null;
+        if (!$userData)
+        {
+            return null;
+        }
+        return $this->createUser($userData);
+    }
+
+    public function getUsers(): ?array
+    {
+        $usersList = [];
+        $query = "SELECT * FROM `user`";
+        $request = $this->connection->prepare($query);
+        $request->execute();
+        $users = $request->fetchAll(\PDO::FETCH_ASSOC);
+        foreach ($users as $user)
+        {
+            $usersList[] = $this->createUser($user);
+        }
+        return $usersList;
     }
 
     public function updateUser(User $user): void
@@ -149,7 +165,7 @@ class UserRepository implements UserRepositoryInterface
             $user['last_name'],
             $user['middle_name'],
             $user['gender'],
-            $user['birth_date'],
+            explode(' ', $user['birth_date'])[0],
             $user['email'],
             $user['phone'],
             $user['avatar_path']

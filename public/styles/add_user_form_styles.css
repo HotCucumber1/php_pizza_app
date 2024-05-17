@@ -1,0 +1,12 @@
+.add_form {
+    margin-inline: auto;
+    margin-top: 50px;
+    width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: paleturquoise
+}
+
+.submit-button {
+    margin-top: 20px;
+}

@@ -1,0 +1,22 @@
+.info-form {
+    margin-inline: auto;
+    margin-top: 3px;
+    width: 500px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: lightgreen;
+}
+
+.avatar-label {
+    display: block;
+}
+
+.avatar {
+    height: 100px;
+    width: 100px;
+    border-radius: 5px
+}
+
+.submit-button, .del-button {
+    margin-top: 20px;
+}

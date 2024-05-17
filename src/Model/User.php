@@ -5,16 +5,16 @@ class User
 {
     private const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
-    public function __construct(private ?int $userId,
-                                private string $firstName,
-                                private string $lastName,
+    public function __construct(private ?int    $userId,
+                                private string  $firstName,
+                                private string  $lastName,
                                 private ?string $middleName,
-                                private string $gender,
+                                private string  $gender,
                                 private ?string $birthDate,
                                 /*private DateTimeImmutable $birthDate,*/
-                                private string $email,
+                                private string  $email,
                                 private ?string $phone,
-                                private ?string $avatar_path)
+                                private ?string $avatarPath)
     {
     }
 
@@ -87,7 +87,7 @@ class User
      */
     public function getAvatarPath(): ?string
     {
-        return $this->avatar_path;
+        return $this->avatarPath;
     }
 
     /**
@@ -147,10 +147,10 @@ class User
     }
 
     /**
-     * @param string|null $avatar_path
+     * @param string|null $avatarPath
      */
-    public function setAvatarPath(?string $avatar_path): void
+    public function setAvatarPath(?string $avatarPath): void
     {
-        $this->avatar_path = $avatar_path;
+        $this->avatarPath = $avatarPath;
     }
 }
