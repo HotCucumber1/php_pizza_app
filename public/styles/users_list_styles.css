@@ -1,5 +1,5 @@
 .users {
-    margin-top: 50px;
+    margin-top: 70px;
     max-width: 700px;
     margin-inline: auto;
 }
@@ -10,12 +10,16 @@
 }
 
 td:last-child {
-    background-color: indianred;
     opacity: 80%;
     text-align: center;
     text-decoration: none;
 }
 
-td:last-child:active {
-    transform: scale(0.95);
+.delete-icon {
+    height: 25px;
+    width: 25px;
+}
+
+.delete-icon:active {
+    transform: scale(0.8);
 }

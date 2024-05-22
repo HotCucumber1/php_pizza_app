@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{%  block head %}
+    {{ parent() }}
+    <link href="/styles/user_page_styles.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}UserPage{% endblock %}
+
+{% block content %}
+    {% include "show_user/user_form.html.twig" with [user] %}
+{% endblock %}

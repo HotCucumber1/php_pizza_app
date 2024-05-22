@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block head %}
+    {{ parent() }}
+    <link href="/styles/users_list_styles.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+    {% include "users_list/users_table.html.twig" with users %}
+{% endblock %}

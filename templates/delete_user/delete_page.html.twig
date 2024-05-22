@@ -7,9 +7,6 @@
 
 {% block title %}Пользователь удален{% endblock %}
 
-{% block delete_page %}
-    <div class="info">
-        <h1>Пользователь успешно удален</h1>
-        <a href="/all_users">Вернуться на главную страницу</a>
-    </div>
+{% block content %}
+    {% include "delete_user/delete_info.html.twig" %}
 {% endblock %}

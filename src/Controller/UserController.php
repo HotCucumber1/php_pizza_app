@@ -32,33 +32,41 @@ class UserController extends AbstractController
 
     public function login(): Response
     {
-        return $this->render("add_user_form.html.twig");
+        return $this->render("add_user/add_user.html.twig");
     }
 
     public function addNewUser(Request $request): Response
     {
-        $user = new User(
-            null,
-            $request->get('name'),
-            $request->get('last_name'),
-            ($request->get('middle_name') == '') ? null : $request->get('middle_name'),
-            $request->get('gender'),
-            $request->get('birth_date'),
-            $request->get('email'),
-            ($request->get('phone') == '') ? null : $request->get('phone'),
-            null,
-        );
-        $lastUserId = $this->repository->addUser($user);
-
-        if ($request->files->get('avatar_path'))
+        try
         {
-            $avatarPath = $this->saveAvatar($request->files->get('avatar_path'), $lastUserId);
+            $user = new User(
+                null,
+                $request->get('name'),
+                $request->get('last_name'),
+                ($request->get('middle_name') == '') ? null : $request->get('middle_name'),
+                $request->get('gender'),
+                $request->get('birth_date'),
+                $request->get('email'),
+                ($request->get('phone') == '') ? null : $request->get('phone'),
+                null,
+            );
+            $lastUserId = $this->repository->addUser($user);
 
-            $user = $this->repository->findUser($lastUserId);
-            $user->setAvatarPath($avatarPath);
-            $this->repository->saveAvatarPathToDB($user);
+            if ($request->files->get('avatar_path'))
+            {
+                $avatarPath = $this->saveAvatar($request->files->get('avatar_path'), $lastUserId);
+
+                $user = $this->repository->findUser($lastUserId);
+                $user->setAvatarPath($avatarPath);
+                $this->repository->saveAvatarPathToDB($user);
+            }
+            return $this->redirectToRoute('show_user', ['user_id' => $lastUserId]);
         }
-        return $this->redirectToRoute('show_user', ['user_id' => $lastUserId]);
+        catch (\Exception $exc)
+        {
+            throw new BadRequestException("ERROR: " . $exc->getMessage(), 404);
+        }
+
     }
 
     public function showUser(Request $request): Response
@@ -74,7 +82,7 @@ class UserController extends AbstractController
             throw new BadRequestException("User not found");
 
         }
-        return $this->render("user_page.html.twig", [
+        return $this->render("show_user/user_page.html.twig", [
             "user" => $user
         ]);
     }
@@ -100,8 +108,7 @@ class UserController extends AbstractController
             $user->setAvatarPath($avatarPath);
         }
         $this->repository->updateUser($user);
-
-        return $this->render("user_page.html.twig", [
+        return $this->render("show_user/user_page.html.twig", [
             "user" => $user
         ]);
     }
@@ -115,7 +122,7 @@ class UserController extends AbstractController
         }
         $this->repository->deleteUser($userId);
 
-        return $this->render("delete_page.html.twig");
+        return $this->render("delete_user/delete_page.html.twig");
     }
 
     public function showAllUsers(Request $request): Response
@@ -125,7 +132,7 @@ class UserController extends AbstractController
         {
             throw new BadRequestException('Users not found');
         }
-        return $this->render("users_list.html.twig", [
+        return $this->render("users_list/users_list.html.twig", [
             "users" => $users
         ]);
     }

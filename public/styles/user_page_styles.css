@@ -1,6 +1,6 @@
 .info-form {
     margin-inline: auto;
-    margin-top: 3px;
+    margin-top: 70px;
     width: 500px;
     padding: 20px;
     border-radius: 10px;
@@ -17,6 +17,6 @@
     border-radius: 5px
 }
 
-.submit-button, .del-button {
+.submit-button, .action-button {
     margin-top: 20px;
 }
