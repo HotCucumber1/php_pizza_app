@@ -1,17 +1,15 @@
 <?php
-namespace App\Model;
+namespace App\Entity;
+
 
 class User
 {
-    private const DATETIME_FORMAT = 'Y-m-d H:i:s';
-
     public function __construct(private ?int    $userId,
                                 private string  $firstName,
                                 private string  $lastName,
                                 private ?string $middleName,
                                 private string  $gender,
-                                private ?string $birthDate,
-                                /*private DateTimeImmutable $birthDate,*/
+                                private \DateTime $birthDate,
                                 private string  $email,
                                 private ?string $phone,
                                 private ?string $avatarPath)
@@ -59,9 +57,9 @@ class User
     }
 
     /**
-     * @return string|null
+     * @return \DateTime|null
      */
-    public function getBirthDate(): ?string
+    public function getBirthDate(): ?\DateTime
     {
         return empty($this->birthDate) ? null : $this->birthDate;
     }
@@ -123,9 +121,9 @@ class User
     }
 
     /**
-     * @param string|null $birthDate
+     * @param \DateTime|null $birthDate
      */
-    public function setBirthDate(?string $birthDate): void
+    public function setBirthDate(?\DateTime $birthDate): void
     {
         $this->birthDate = $birthDate;
     }
