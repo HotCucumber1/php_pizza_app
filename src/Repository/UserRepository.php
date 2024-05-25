@@ -18,7 +18,8 @@ class UserRepository
 
     public function findUserById(int $userId): ?User
     {
-        return $this->repository->findOneBy(["user_id" => (string)$userId]);
+        return $this->entityManager->find(User::class, $userId);
+        // return $this->repository->findOneBy(["userId" => (string) $userId]);
     }
 
     public function store(User $user): int

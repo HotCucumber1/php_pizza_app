@@ -18,7 +18,7 @@
     </div>
     <div class="form-group">
         <label for="birth_date">Birth date:</label>
-        <input name="birth_date" id="birth_date" type="date" class="form-control" value="{{ user.birthDate }}">
+        <input name="birth_date" id="birth_date" type="date" class="form-control" value="{{ user.birthDate|date("Y-m-d") }}">
     </div>
     <div class="form-group">
         <label for="email">Email:</label>

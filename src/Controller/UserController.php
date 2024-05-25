@@ -17,7 +17,6 @@ class UserController extends AbstractController
     private const JPEG = 'image/jpeg';
     private const GIF = 'image/gif';
     private const SAVE_DIR = './uploads/';
-    private const DATETIME_FORMAT = 'Y-m-d H:i:s';
 
     public function __construct(
         private readonly UserRepository $repository
@@ -113,11 +112,12 @@ class UserController extends AbstractController
     public function deleteUser(Request $request): Response
     {
         $userId = $request->get('user_id') ?? null;
+        $user = $this->repository->findUserById($userId);
         if (is_null($userId))
         {
             throw new BadRequestException('Parameter userId is not defined');
         }
-        $this->repository->delete($userId);
+        $this->repository->delete($user);
 
         return $this->render("delete_user/delete_page.html.twig");
     }
