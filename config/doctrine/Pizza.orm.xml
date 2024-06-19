@@ -1,0 +1,25 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Entity\Pizza" table="pizza">
+        <id name="pizzaId" type="integer" column="pizza_id">
+            <generator strategy="IDENTITY" />
+        </id>
+
+        <field name="pizzaName" column="pizza_name" type="string" length="255" nullable="false" unique="true"/>
+        <field name="definition" column="definition" type="text" nullable="true"/>
+        <field name="weight" column="weight" type="integer" nullable="false" />
+        <field name="pizzaType" column="pizza_type" type="integer" nullable="true" />
+        <field name="pizzaImage" column="image_path" type="string" length="255" nullable="false" />
+
+        <indexes>
+            <index name="name_idx" columns="pizza_name"/>
+        </indexes>
+
+        <unique-constraints>
+            <unique-constraint columns="pizza_name" name="search_idx" />
+        </unique-constraints>
+    </entity>
+</doctrine-mapping>
