@@ -19,6 +19,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Service\SiteUpdateManager:
+        arguments:
+            $adminEmail: '%env(ADMIN_EMAIL)%'
 
 
     # add more service definitions when explicit configuration is needed
