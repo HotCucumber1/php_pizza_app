@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 interface UserServiceInterface
 {
@@ -14,7 +15,9 @@ interface UserServiceInterface
                              \DateTime $birtDate,
                              string $email,
                              ?string $phone,
-                             ?string $avatarPath): int;
+                             ?string $avatarPath,
+                             string $password,
+                             UserPasswordHasherInterface $hasher): int;
 
     public function getUser(int $userId): User;
     public function deleteUser(int $userId): void;

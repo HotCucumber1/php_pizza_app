@@ -2,17 +2,24 @@
 namespace App\Entity;
 
 
-class User
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordUpgraderInterface
 {
     public function __construct(private ?int    $userId,
                                 private string  $firstName,
                                 private string  $lastName,
                                 private ?string $middleName,
+                                private ?string $password,
                                 private string  $gender,
                                 private \DateTime $birthDate,
                                 private string  $email,
                                 private ?string $phone,
-                                private ?string $avatarPath)
+                                private ?string $avatarPath,
+                                private array   $roles = [])
     {
     }
 
@@ -22,6 +29,11 @@ class User
     public function getUserId(): ?int
     {
         return $this->userId;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     /**
@@ -88,6 +100,40 @@ class User
         return $this->avatarPath;
     }
 
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function getUsername()
+    {
+        // TODO: Implement getUsername() method.
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        // TODO: Implement @method string getUserIdentifier()
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
     /**
      * @param string $firstName
      */
@@ -150,5 +196,10 @@ class User
     public function setAvatarPath(?string $avatarPath): void
     {
         $this->avatarPath = $avatarPath;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

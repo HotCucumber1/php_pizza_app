@@ -1,12 +1,12 @@
 index:
     path: /
     methods: GET
-    controller: App\Controller\UserController::index
+    controller: App\Controller\LoginController::index
 
 add_user:
     path: /add_user
     methods: GET
-    controller: App\Controller\UserController::login
+    controller: App\Controller\LoginController::login
 
 upload_user:
     path: /user_upload
@@ -32,3 +32,8 @@ all_users:
     path: /all_users
     methods: GET
     controller: App\Controller\UserController::showAllUsers
+
+test:
+    path: /test
+    methods: GET
+    controller: App\Controller\UserController::test

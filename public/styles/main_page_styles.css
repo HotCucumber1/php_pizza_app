@@ -10,13 +10,12 @@
 }
 
 body {
-    background-color: whitesmoke;
-    font-family: sans-serif;
+    background-color: #F8F8F8;
 }
 
 .header {
     display: flex;
-    /*position: fixed;*/
+    position: fixed;
     padding-block: 10px;
     padding-inline: 60px;
     box-shadow: 0 10px 10px lightgray;
@@ -76,8 +75,4 @@ body {
 
 .job-button:active {
     transform: scale(0.96);
-}
-
-.main {
-
 }

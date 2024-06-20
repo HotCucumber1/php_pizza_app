@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserService implements UserServiceInterface
 {
@@ -21,19 +22,25 @@ class UserService implements UserServiceInterface
                              \DateTime $birtDate,
                              string $email,
                              ?string $phone,
-                             ?string $avatarPath): int
+                             ?string $avatarPath,
+                             string $password,
+                             UserPasswordHasherInterface $hasher): int
     {
         $user = new User(
             null,
             $name,
             $lastName,
             $middleName,
+            null,
             $gender,
             $birtDate,
             $email,
             $phone,
             $avatarPath,
         );
+
+        $hashedPassword = $hasher->hashPassword($user, $password);
+        $user->setPassword($hashedPassword);
         return $this->userRepository->store($user);
     }
 
@@ -56,7 +63,7 @@ class UserService implements UserServiceInterface
     public function updateAvatar(UploadedFile $avatar, int $userId): void
     {
         $user = $this->userRepository->findUserById($userId);
-        $avatarPath = $this->imageService->moveImageToUploads($avatar, $userId);
+        $avatarPath = $this->imageService->moveImageToUploads($avatar, (string)$userId);
         $user->setAvatarPath($avatarPath);
         $this->userRepository->store($user);
     }
@@ -87,7 +94,7 @@ class UserService implements UserServiceInterface
 
         if ($avatar)
         {
-            $avatarPath = $this->imageService->moveImageToUploads($avatar, $userId);
+            $avatarPath = $this->imageService->moveImageToUploads($avatar, (string)$userId);
             $user->setAvatarPath($avatarPath);
         }
 

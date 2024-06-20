@@ -8,6 +8,7 @@ class Pizza
                                 private string  $pizzaName,
                                 private ?string $definition,
                                 private int     $weight,
+                                private float   $price,
                                 private string  $pizzaImage,
                                 private ?string $pizzaType)
     {
@@ -35,6 +36,14 @@ class Pizza
     public function getDefinition(): ?string
     {
         return $this->definition;
+    }
+
+    /**
+     * @return float
+     */
+    public function getPrice(): float
+    {
+        return $this->price;
     }
 
     /**
@@ -77,6 +86,13 @@ class Pizza
         $this->definition = $definition;
     }
 
+    /**
+     * @param float $price
+     */
+    public function setPrice(float $price): void
+    {
+        $this->price = $price;
+    }
     /**
      * @param int $weight
      */

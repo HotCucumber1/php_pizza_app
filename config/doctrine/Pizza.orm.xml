@@ -11,6 +11,7 @@
         <field name="pizzaName" column="pizza_name" type="string" length="255" nullable="false" unique="true"/>
         <field name="definition" column="definition" type="text" nullable="true"/>
         <field name="weight" column="weight" type="integer" nullable="false" />
+        <field name="price" column="price" type="float" nullable="false"/>
         <field name="pizzaType" column="pizza_type" type="integer" nullable="true" />
         <field name="pizzaImage" column="image_path" type="string" length="255" nullable="false" />
 

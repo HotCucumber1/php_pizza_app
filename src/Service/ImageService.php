@@ -19,7 +19,7 @@ class ImageService implements ImageServiceInterface
     {
     }
 
-    public function moveImageToUploads(UploadedFile $file, int $userId): ?string
+    public function moveImageToUploads(UploadedFile $file, string $id): ?string
     {
         if (!$file->isValid())
         {
@@ -33,7 +33,7 @@ class ImageService implements ImageServiceInterface
             throw new InvalidArgumentException("File '{$fileName}' has non-image type '{$imageExt}'");
         }
 
-        $destFileName = "avatar" . "{$userId}" . "." . $imageExt;
+        $destFileName = "avatar" . $id . "." . $imageExt;
         return $this->moveFileToUploads($file, $destFileName);
     }
 

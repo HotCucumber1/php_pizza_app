@@ -8,5 +8,10 @@
 {% block title %}Add user{% endblock %}
 
 {% block content %}
+    {% if error %}
+        <div>
+            {{ error.meassageKey | trans(error.messageData, 'security') }}
+        </div>
+    {% endif %}
     {% include "add_user/add_user_form.html.twig" %}
 {% endblock %}

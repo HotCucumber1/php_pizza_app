@@ -6,7 +6,5 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface ImageServiceInterface
 {
-    public function moveImageToUploads(UploadedFile $file, int $userId): ?string;
-
-
+    public function moveImageToUploads(UploadedFile $file, string $id): ?string;
 }
