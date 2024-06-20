@@ -17,6 +17,9 @@ class Pizza
     /**
      * @return int|null
      */
+    /**
+     * @return int|null
+     */
     public function getPizzaId(): ?int
     {
         return $this->pizzaId;

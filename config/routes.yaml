@@ -36,4 +36,4 @@ all_users:
 test:
     path: /test
     methods: GET
-    controller: App\Controller\UserController::test
+    controller: App\Controller\StorefrontController::index

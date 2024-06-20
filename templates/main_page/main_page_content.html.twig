@@ -1,0 +1,19 @@
+<main class="content">
+    {% for pizza in pizzas %}
+        <div class="content-block">
+            <img class="content-block__image" src="{{ pizza.getPizzaImage() }}" alt="Pizza">
+            <div class="content-block__info">
+                <span class="content-block__type"></span>
+                <div class="content-block__heading">
+                    <h3 class="content-block__title">{{ pizza.getPizzaName() }}</h3>
+                    <p class="content-block__description">{{ pizza.getDefinition() }}</p>
+                </div>
+                <p class="content-block__weight">{{ pizza.getWeight() }} г</p>
+                <div class="content-block__order-area">
+                    <button class="content-block__button">Заказать</button>
+                    <p class="content-block__price">{{ pizza.getPrice() }} ₽</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</main>

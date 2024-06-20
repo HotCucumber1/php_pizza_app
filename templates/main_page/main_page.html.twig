@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{%  block head %}
+    {{ parent() }}
+    <link href="/styles/main_page_styles.css" rel="stylesheet">
+{% endblock %}
+
+{% block title %}Don Corleine{% endblock %}
+
+{% block content %}
+    {% include "main_page/main_page_content.html.twig" with pizzas%}
+{% endblock %}
