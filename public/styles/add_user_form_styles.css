@@ -1,11 +1,95 @@
-.add_form {
+.form {
+    display: flex;
+    margin-top: 150px;
     margin-inline: auto;
-    width: 500px;
+    width: 600px;
     padding: 20px;
-    border-radius: 10px;
-    background-color: paleturquoise
+    border-radius: 20px;
+    box-shadow: 0 5px 10px lightgray;
+    column-gap: 32px;
 }
 
-.submit-button {
-    margin-top: 20px;
+.form__title {
+    font-family: "Dodo Rounded", sans-serif;
+    font-size: 36px;
+    margin-bottom: 40px;
+}
+
+.form__input-field {
+    margin-bottom: var(--block-margin-bottom);
+}
+
+.form__label {
+    display: block;
+    margin-bottom: 3px;
+}
+
+.form__input {
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--main-color);
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    font-size: 24px;
+    line-height: 32px;
+    background-color: transparent;
+}
+
+.form__input:focus {
+    border-bottom: 2px solid var(--main-color);
+}
+
+.form__link {
+    color: var(--main-color);
+}
+
+.form__sign-in-button {
+    margin-top: 30px;
+    background-color: var(--main-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    color: var(--light-color);
+    font-size: 26px;
+}
+
+.form__sign-in-button:active {
+    transform: scale(0.96);
+}
+
+.form__avatar-area {
+    margin-block: auto;
+}
+
+.form__avatar-input {
+    display: none;
+}
+
+.form__avatar {
+    display: block;
+    width: 200px;
+    height: 200px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.form__avatar-button {
+    text-align: center;
+    color: var(--main-color);
+    font-size: 20px;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.form__avatar-button:active {
+    transform: scale(0.96);
+}
+
+.form__avatar-img {
+    width: inherit;
+    height: inherit;
+}
+
+.form__avatar-img:active {
+    transform: scale(0.96);
 }

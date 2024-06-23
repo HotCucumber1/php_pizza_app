@@ -10,7 +10,7 @@
                 </div>
                 <p class="content-block__weight">{{ pizza.getWeight() }} г</p>
                 <div class="content-block__order-area">
-                    <button class="content-block__button">Заказать</button>
+                    <a class="content-block__button" href="{{ path('make_order', { pizzaId: pizza.getPizzaId()}) }}">Заказать</a>
                     <p class="content-block__price">{{ pizza.getPrice() }} ₽</p>
                 </div>
             </div>

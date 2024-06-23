@@ -33,7 +33,7 @@ class ImageService implements ImageServiceInterface
             throw new InvalidArgumentException("File '{$fileName}' has non-image type '{$imageExt}'");
         }
 
-        $destFileName = "avatar" . $id . "." . $imageExt;
+        $destFileName = "image_" . $id . "." . $imageExt;
         return $this->moveFileToUploads($file, $destFileName);
     }
 

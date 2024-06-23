@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{%  block head %}
+    {{ parent() }}
+    <link href="/styles/add_user_form_styles.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    {% include "sign_in/sign_in_form.html.twig" %}
+{% endblock %}

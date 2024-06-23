@@ -3,7 +3,7 @@
 <head>
     {% block head %}
         <meta charset="UTF-8">
-        <title>{% block title %}{% endblock %}</title>
+        <title>{% block title %}Don Corleon{% endblock %}</title>
         <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
               integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">-->
         <link rel="icon" href="/images/pizza_icon.png">
@@ -13,16 +13,18 @@
 
 <body>
     <header class="header">
-        <div class="logo">
+        {% include "header.html.twig" %}
+        <!--<a href="/" class="logo">
             <img class="logo-img" src="/images/pizza_icon.png" alt="Icon">
             <p class="logo-text">Don Corleone</p>
-        </div>
+        </a>
         <ul class="menu">
             <li class="menu__item"><a class="menu__link" href="#">Акции</a></li>
             <li class="menu__item"><a class="menu__link" href="#">Доставка</a></li>
             <li class="menu__item"><a class="menu__link" href="#">О нас</a></li>
         </ul>
-        <button class="job-button">Стать участником</button>
+        <a href="/" class="job-button">Выйти</a>
+        <img class="user-icon" src="/images/pepperoni.png" alt="Icon">-->
     </header>
 
     <main class="main">

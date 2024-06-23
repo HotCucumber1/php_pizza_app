@@ -1,0 +1,19 @@
+<form action="/user_upload" class="form" method="POST" enctype="multipart/form-data">
+    <div class="form__input-block">
+        <h2 class="form__title">Вход на сайт</h2>
+
+        <div class="form__input-field">
+            <label class="form__label" for="email">Email</label>
+            <input class="form__input" type="text" id="email" name="email">
+        </div>
+
+        <div class="form__input-field">
+            <label class="form__label" for="password">Пароль</label>
+            <input class="form__input" type="password" id="password" name="password">
+        </div>
+
+        <p class="">Еще нет аккаунта? <a class="form__link" href="/add_user">Создать</a></p>
+
+        <button class="form__sign-in-button">Войти</button>
+    </div>
+</form>

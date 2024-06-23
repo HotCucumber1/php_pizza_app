@@ -12,14 +12,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function __construct(private ?int    $userId,
                                 private string  $firstName,
                                 private string  $lastName,
-                                private ?string $middleName,
                                 private ?string $password,
-                                private string  $gender,
-                                private \DateTime $birthDate,
                                 private string  $email,
                                 private ?string $phone,
                                 private ?string $avatarPath,
-                                private array   $roles = [])
+                                private string  $role = 'ROLE_USER')
     {
     }
 
@@ -53,30 +50,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 
     /**
-     * @return string|null
-     */
-    public function getMiddleName(): ?string
-    {
-        return $this->middleName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getGender(): string
-    {
-        return $this->gender;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getBirthDate(): ?\DateTime
-    {
-        return empty($this->birthDate) ? null : $this->birthDate;
-    }
-
-    /**
      * @return string
      */
     public function getEmail(): string
@@ -100,11 +73,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return $this->avatarPath;
     }
 
-    public function getRoles(): array
+    public function getRoles(): ?string
     {
-        $roles = $this->roles;
-        $roles[] = 'ROLE_USER';
-        return array_unique($roles);
+        return $this->role;
     }
 
     public function getSalt()
@@ -151,14 +122,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 
     /**
-     * @param string|null $middleName
-     */
-    public function setMiddleName(?string $middleName): void
-    {
-        $this->middleName = $middleName;
-    }
-
-    /**
      * @param string $email
      */
     public function setEmail(string $email): void
@@ -167,27 +130,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 
     /**
-     * @param \DateTime|null $birthDate
-     */
-    public function setBirthDate(?\DateTime $birthDate): void
-    {
-        $this->birthDate = $birthDate;
-    }
-
-    /**
-     * @param string $gender
-     */
-    public function setGender(string $gender): void
-    {
-        $this->gender = $gender;
-    }
-
-    /**
      * @param string|null $phone
      */
     public function setPhone(?string $phone): void
     {
         $this->phone = $phone;
+    }
+
+    /**
+     * @param string|null $role
+     */
+    public function setRole(?string $role): void
+    {
+        $this->role = $role;
     }
 
     /**

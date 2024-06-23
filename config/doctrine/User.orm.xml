@@ -10,13 +10,11 @@
 
         <field name="firstName" column="first_name" type="string" length="255" nullable="false"/>
         <field name="lastName" column="last_name" type="string" length="255" nullable="false"/>
-        <field name="middleName" column="middle_name" type="string" length="255" nullable="true"/>
         <field name="password" column="password" type="string" length="255" nullable="true"/>
-        <field name="gender" column="gender" type="string" length="255" nullable="false" />
-        <field name="birthDate" column="birth_date" type="datetime" nullable="false" />
         <field name="email" column="email" type="string" length="255" unique="true" nullable="false" />
-        <field name="phone" column="phone" type="string" length="255" unique="true" nullable="true" />
+        <field name="phone" column="phone" type="string" length="255" unique="true" nullable="false" />
         <field name="avatarPath" column="avatar_path" type="string" length="255" nullable="true" />
+        <field name="role" column="role" type="string" length="255" nullable="true"/>
 
         <indexes>
             <index name="email_idx" columns="email"/>

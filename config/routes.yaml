@@ -6,6 +6,11 @@ index:
 add_user:
     path: /add_user
     methods: GET
+    controller: App\Controller\LoginController::signUp
+
+sign_in:
+    path: /enter
+    methods: GET
     controller: App\Controller\LoginController::login
 
 upload_user:
@@ -13,27 +18,27 @@ upload_user:
     methods: POST
     controller: App\Controller\UserController::addNewUser
 
-show_user:
-    path: /show_user
+show_main_page:
+    path: /main_page
     methods: GET
-    controller: App\Controller\UserController::showUser
-
-update_user:
-    path: /update_user
-    methods: POST|GET
-    controller: App\Controller\UserController::updateUser
-
-delete_user:
-    path: /delete_user
-    methods: GET
-    controller: App\Controller\UserController::deleteUser
-
-all_users:
-    path: /all_users
-    methods: GET
-    controller: App\Controller\UserController::showAllUsers
+    controller: App\Controller\StorefrontController::index
 
 test:
     path: /test
     methods: GET
-    controller: App\Controller\StorefrontController::index
+    controller: App\Controller\UserController::test
+
+make_order:
+    path: /make_order
+    methods: GET
+    controller: App\Controller\StorefrontController::order
+
+order:
+    path: /order
+    methods: GET
+    controller: App\Controller\OrderController::index
+
+logout:
+    path: /logout
+    methods: GET
+    controller: App\Controller\LoginController::logout

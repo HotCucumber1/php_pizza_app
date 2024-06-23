@@ -10,9 +10,6 @@ interface UserServiceInterface
 {
     public function saveUser(string $name,
                              string $lastName,
-                             ?string $middleName,
-                             string $gender,
-                             \DateTime $birtDate,
                              string $email,
                              ?string $phone,
                              ?string $avatarPath,
@@ -25,9 +22,6 @@ interface UserServiceInterface
     public function updateUser(int $userId,
                                string $name,
                                string $lastName,
-                               ?string $middleName,
-                               string $gender,
-                               \DateTime $birtDate,
                                string $email,
                                ?string $phone,
                                UploadedFile $avatar): User;

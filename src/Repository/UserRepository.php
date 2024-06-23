@@ -22,6 +22,11 @@ class UserRepository
         // return $this->repository->findOneBy(["userId" => (string) $userId]);
     }
 
+    public function findUserByEmail(string $email): ?User
+    {
+        return $this->repository->findOneBy(['email' => $email]);
+    }
+
     public function store(User $user): int
     {
         $this->entityManager->persist($user);

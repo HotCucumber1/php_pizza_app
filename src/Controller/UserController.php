@@ -28,13 +28,11 @@ class UserController extends AbstractController
 
     public function addNewUser(Request $request, UserPasswordHasherInterface $hasher): Response
     {
+
         $lastUserId = $this->userService->saveUser($request->get('name'),
                                                     $request->get('last_name'),
-                                                    ($request->get('middle_name') == '') ? null : $request->get('middle_name'),
-                                                    $request->get('gender'),
-                                                    new \DateTime($request->get('birth_date')),
                                                     $request->get('email'),
-                                                    ($request->get('phone')) ? null : $request->get('phone'),
+                                                    ($request->get('phone') == '') ? null : $request->get('phone'),
                                                     null,
                                                     $request->get('password'),
                                                     $hasher);
@@ -43,7 +41,7 @@ class UserController extends AbstractController
         {
             $this->userService->updateAvatar($request->files->get('avatar_path'), (string)$lastUserId);
         }
-        return $this->redirectToRoute('show_user', ['user_id' => $lastUserId]);
+        return $this->redirectToRoute('show_main_page');
     }
 
     public function showUser(Request $request): Response
@@ -71,9 +69,6 @@ class UserController extends AbstractController
         $user = $this->userService->updateUser($userId,
                                         $request->get('name'),
                                         $request->get('last_name'),
-                                        ($request->get('middle_name') == '') ? null : $request->get('middle_name'),
-                                        $request->get('gender'),
-                                        new \DateTime($request->get('birth_date')),
                                         $request->get('email'),
                                         ($request->get('phone') == '') ? null : $request->get('phone'),
                                         $request->files->get('avatar_path'));
@@ -108,9 +103,4 @@ class UserController extends AbstractController
     {
         return $this->render("/main_page.html");
     }
-
-    /*public function adminDashboard(): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
-    }*/
 }

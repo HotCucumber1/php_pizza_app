@@ -4,9 +4,11 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Symfony\Component\Config\Definition\Exception\ForbiddenOverwriteException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class UserService implements UserServiceInterface
 {
@@ -17,23 +19,32 @@ class UserService implements UserServiceInterface
 
     public function saveUser(string $name,
                              string $lastName,
-                             ?string $middleName,
-                             string $gender,
-                             \DateTime $birtDate,
                              string $email,
                              ?string $phone,
                              ?string $avatarPath,
                              string $password,
                              UserPasswordHasherInterface $hasher): int
     {
+        if (!$this->isValid($name,
+                            $lastName,
+                            $email,
+                            $phone,
+                            $password))
+        {
+            throw new \InvalidArgumentException("User data is not valid");
+        }
+        $existingUser = $this->userRepository->findUserByEmail($email);
+
+        if ($existingUser)
+        {
+            throw new \InvalidArgumentException('User with email "' . $email . '" has already been registered');
+        }
+
         $user = new User(
             null,
             $name,
             $lastName,
-            $middleName,
             null,
-            $gender,
-            $birtDate,
             $email,
             $phone,
             $avatarPath,
@@ -71,9 +82,6 @@ class UserService implements UserServiceInterface
     public function updateUser(int $userId,
                                string $name,
                                string $lastName,
-                               ?string $middleName,
-                               string $gender,
-                               \DateTime $birtDate,
                                string $email,
                                ?string $phone,
                                ?UploadedFile $avatar): User
@@ -86,9 +94,6 @@ class UserService implements UserServiceInterface
 
         $user->setFirstName($name);
         $user->setLastName($lastName);
-        $user->setMiddleName($middleName);
-        $user->setGender($gender);
-        $user->setBirthDate($birtDate);
         $user->setEmail($email);
         $user->setPhone($phone);
 
@@ -110,5 +115,39 @@ class UserService implements UserServiceInterface
             throw new BadRequestException('Users not found');
         }
         return $users;
+    }
+
+    private function isValid(string $name,
+                             string $lastName,
+                             string $email,
+                             ?string $phone,
+                             string $password): bool
+    {
+        if (trim($name) === '' ||
+            trim($lastName) === '' ||
+            trim($email) === '' ||
+            trim($password) == '')
+        {
+            return false;
+        }
+        if (!$this->checkEmail($email))
+        {
+            return false;
+        }
+        if (trim($phone) !== '' && !$this->checkNumber($phone))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private function checkEmail(string $email): bool
+    {
+        return filter_var($email, FILTER_VALIDATE_EMAIL);
+    }
+
+    private function checkNumber(string $number): bool
+    {
+        return is_numeric($number);
     }
 }
