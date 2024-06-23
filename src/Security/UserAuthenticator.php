@@ -46,6 +46,9 @@ class UserAuthenticator extends AbstractLoginFormAuthenticator
         {
             return new RedirectResponse($targetPath);
         }
+
+        echo 'Hello';
+
         return new RedirectResponse($this->urlGenerator->generate('show_main_page'));
     }
 
