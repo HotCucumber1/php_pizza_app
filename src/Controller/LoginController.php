@@ -34,6 +34,13 @@ class LoginController extends AbstractController
 
     public function logout(): Response
     {
+        session_name('sid');
+        session_start();
+
+        $_SESSION = [];
+        session_destroy();
+        setcookie(session_name(), "", time()-3600);
+
         return $this->redirectToRoute('index');
     }
 }
