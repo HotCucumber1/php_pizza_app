@@ -26,7 +26,7 @@ class UserController extends AbstractController
         return $this->render("add_user/add_user.html.twig");
     }
 
-    public function addNewUser(Request $request, UserPasswordHasherInterface $hasher): Response
+    public function addNewUser(Request $request): Response
     {
 
         $lastUserId = $this->userService->saveUser($request->get('name'),
@@ -34,12 +34,21 @@ class UserController extends AbstractController
                                                     $request->get('email'),
                                                     ($request->get('phone') == '') ? null : $request->get('phone'),
                                                     null,
-                                                    $request->get('password'),
-                                                    $hasher);
+                                                    $request->get('password'));
 
         if ($request->files->get('avatar_path'))
         {
             $this->userService->updateAvatar($request->files->get('avatar_path'), (string)$lastUserId);
+        }
+        return $this->redirectToRoute('show_main_page');
+    }
+
+    public function findUser(Request $request): Response
+    {
+        $email = $request->get("email") ?? null;
+        if (is_null($email))
+        {
+            throw new BadRequestException('Parameter user_id is not defined');
         }
         return $this->redirectToRoute('show_main_page');
     }
@@ -51,7 +60,7 @@ class UserController extends AbstractController
         {
             throw new BadRequestException('Parameter user_id is not defined');
         }
-        $user = $this->userService->getUser($userId);
+        $user = $this->userService->getUserById($userId);
 
         return $this->render("show_user/user_page.html.twig", [
             "user" => $user

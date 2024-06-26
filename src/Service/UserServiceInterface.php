@@ -13,10 +13,12 @@ interface UserServiceInterface
                              string $email,
                              ?string $phone,
                              ?string $avatarPath,
-                             string $password,
-                             UserPasswordHasherInterface $hasher): int;
+                             string $password): int;
 
-    public function getUser(int $userId): User;
+    public function getUserById(int $userId): User;
+    public function getUserByEmail(string $email): User;
+    public function isPasswordRight(User $user, string $password): bool;
+    public function isAdmin(User $user): bool;
     public function deleteUser(int $userId): void;
     public function getListUsers(): array;
     public function updateUser(int $userId,

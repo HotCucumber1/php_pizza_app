@@ -13,6 +13,16 @@ sign_in:
     methods: GET
     controller: App\Controller\LoginController::login
 
+login:
+    path: /login
+    methods: POST
+    controller: App\Controller\LoginController::signIn
+
+check_user:
+    path: /check
+    methods: POST
+    controller: App\Controller\UserController::findUser
+
 upload_user:
     path: /user_upload
     methods: POST

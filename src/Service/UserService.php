@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\User;
+use App\Entity\UserRole;
 use App\Repository\UserRepository;
 use Symfony\Component\Config\Definition\Exception\ForbiddenOverwriteException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -13,6 +14,7 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 class UserService implements UserServiceInterface
 {
     public function __construct(private readonly UserRepository $userRepository,
+                                private readonly UserPasswordHasherInterface $hasher,
                                 private readonly ImageServiceInterface $imageService)
     {
     }
@@ -22,8 +24,7 @@ class UserService implements UserServiceInterface
                              string $email,
                              ?string $phone,
                              ?string $avatarPath,
-                             string $password,
-                             UserPasswordHasherInterface $hasher): int
+                             string $password): int
     {
         if (!$this->isValid($name,
                             $lastName,
@@ -50,12 +51,12 @@ class UserService implements UserServiceInterface
             $avatarPath,
         );
 
-        $hashedPassword = $hasher->hashPassword($user, $password);
+        $hashedPassword = $this->hasher->hashPassword($user, $password);
         $user->setPassword($hashedPassword);
         return $this->userRepository->store($user);
     }
 
-    public function getUser(int $userId): User
+    public function getUserById(int $userId): User
     {
         $user = $this->userRepository->findUserById($userId);
         if (is_null($user))
@@ -63,6 +64,26 @@ class UserService implements UserServiceInterface
             throw new BadRequestException("User not found");
         }
         return $user;
+    }
+
+    public function getUserByEmail(string $email): User
+    {
+        $user = $this->userRepository->findUserByEmail($email);
+        if (is_null($user))
+        {
+            throw new BadRequestException("User not found");
+        }
+        return $user;
+    }
+
+    public function isPasswordRight(User $user, string $password): bool
+    {
+        return $this->hasher->isPasswordValid($user, $password);
+    }
+
+    public function isAdmin(User $user): bool
+    {
+        return UserRole::isAdmin($user->getRoles());
     }
 
     public function deleteUser(int $userId): void
