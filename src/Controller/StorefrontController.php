@@ -20,7 +20,7 @@ class StorefrontController extends AbstractController
 
     public function index(): Response
     {
-        $userId = SessionController::takeIdFromSession();
+        $userId = SessionController::takeUserIdFromSession();
         $user = $this->userService->getUserById($userId);
 
         $role = $user->getRoles();

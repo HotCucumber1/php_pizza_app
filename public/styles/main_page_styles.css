@@ -80,4 +80,20 @@
     margin-block: auto;
 }
 
+.basket__link {
+    display: block;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+}
+
+.basket__link:active {
+    transform: scale(0.9);
+}
+
+.basket {
+    width: 100px;
+    height: 100px;
+}
+
 

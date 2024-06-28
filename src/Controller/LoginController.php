@@ -46,7 +46,7 @@ class LoginController extends AbstractController
         {
             throw new BadRequestException("Role is incorrect");
         }
-        SessionController::putIdInSession($id);
+        SessionController::putUserIdInSession($id);
         return $this->redirectToRoute("show_main_page");
     }
 

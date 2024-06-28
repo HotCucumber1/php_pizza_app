@@ -18,7 +18,7 @@ class AddPizzaController extends AbstractController
 
     public function index(): Response
     {
-        $id = SessionController::takeIdFromSession();
+        $id = SessionController::takeUserIdFromSession();
         $user = $this->userService->getUserById($id);
         return $this->render('add_pizza/add_pizza.html.twig', [
             'user' => $user
@@ -34,6 +34,8 @@ class AddPizzaController extends AbstractController
         $price = $request->get('price');
         $image = $request->files->get('image');
         // $type = $request->get('type');
+
+
 
         if ($pizzaName === '' || $definition === '' || $weight === '' || $price === '' || !$image)
         {

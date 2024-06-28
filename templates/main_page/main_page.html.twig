@@ -24,4 +24,8 @@
 
 {% block content %}
     {% include "main_page/main_page_content.html.twig" with [pizzas, user] %}
+    <a class="basket__link" href="/basket">
+        <img class="basket" src="/images/cart.png" alt="Cart">
+    </a>
+
 {% endblock %}

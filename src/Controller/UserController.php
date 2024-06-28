@@ -29,7 +29,7 @@ class UserController extends AbstractController
             $this->userService->updateAvatar($request->files->get('avatar_path'), (string)$lastUserId);
         }
 
-        SessionController::putIdInSession($lastUserId);
+        SessionController::putUserIdInSession($lastUserId);
         return $this->redirectToRoute('show_main_page');
     }
 }

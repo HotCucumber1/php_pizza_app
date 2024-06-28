@@ -44,6 +44,7 @@
 }
 
 .form__sign-in-button {
+    display: block;
     margin-top: 30px;
     background-color: var(--main-color);
     border: none;
@@ -51,6 +52,18 @@
     border-radius: 15px;
     color: var(--light-color);
     font-size: 26px;
+}
+
+.form__clear-order-link {
+    display: inline-block;
+    margin-top: 30px;
+    background-color: var(--main-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 15px;
+    color: var(--light-color);
+    font-size: 26px;
+    text-decoration: none;
 }
 
 .form__sign-in-button:active {
@@ -109,4 +122,15 @@
     letter-spacing: 1px;
     color: darkred;
     text-align: center;
+}
+
+.form__basket-info {
+    margin-top: 65px;
+}
+
+.basket__point {
+    font-family: sans-serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: darkred;
 }

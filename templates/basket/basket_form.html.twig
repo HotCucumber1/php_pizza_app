@@ -1,0 +1,36 @@
+<form action="/thanks" class="form" method="POST" enctype="multipart/form-data">
+    <div class="form__input-block">
+        <h2 class="form__title">Заказ</h2>
+
+        <div class="form__input-field">
+            <label class="form__label" for="city">Город</label>
+            <input class="form__input" type="text" id="city" name="city">
+        </div>
+
+        <div class="form__input-field">
+            <label class="form__label" for="street">Улица</label>
+            <input class="form__input" type="text" id="street" name="street">
+        </div>
+
+        <div class="form__input-field">
+            <label class="form__label" for="house">Дом</label>
+            <input class="form__input" type="text" id="house" name="house">
+        </div>
+
+        <div class="form__input-field">
+            <label class="form__label" for="flat">Квартира</label>
+            <input class="form__input" type="text" id="flat" name="flat">
+        </div>
+
+        <a class="form__clear-order-link" href="/clear_order">Очистить корзину</a>
+        <button class="form__sign-in-button">Заказать</button>
+
+    </div>
+
+    <div class="form__basket-info">
+        {% for pizza in pizzas %}
+            <p class="basket__point">{{ pizza[0].getPizzaName() }}: {{ pizza[1] }}</p>
+        {% endfor %}
+    </div>
+
+</form>

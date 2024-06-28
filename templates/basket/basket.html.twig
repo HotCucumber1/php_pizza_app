@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{%  block head %}
+    {{ parent() }}
+    <link href="/styles/form_styles.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+    {% include "basket/basket_form.html.twig" with pizzas %}
+{% endblock %}
