@@ -48,6 +48,26 @@ order:
     methods: GET
     controller: App\Controller\OrderController::index
 
+thanks:
+    path: /thanks
+    methods: POST
+    controller: App\Controller\OrderController::showThankYouPage
+
+add_pizza:
+    path: /add_pizza
+    methods: GET
+    controller: App\Controller\AddPizzaController::index
+
+store_pizza:
+    path: /store_pizza
+    methods: POST
+    controller: App\Controller\AddPizzaController::add
+
+delete_pizza:
+    path: /delete_pizza
+    methods: GET
+    controller: App\Controller\StorefrontController::deletePizza
+
 logout:
     path: /logout
     methods: GET

@@ -15,4 +15,5 @@ interface PizzaServiceInterface
                              ?string $pizzaType): int;
     public function getPizza(int $pizzaId): Pizza;
     public function getListPizzas(): array;
+    public function deletePizza(int $id): void;
 }

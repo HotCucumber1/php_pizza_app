@@ -9,7 +9,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\ForbiddenOverwriteException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 
 class StorefrontController extends AbstractController
@@ -19,10 +18,9 @@ class StorefrontController extends AbstractController
     {
     }
 
-
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        $userId = (int)$request->get('id');
+        $userId = SessionController::takeIdFromSession();
         $user = $this->userService->getUserById($userId);
 
         $role = $user->getRoles();
@@ -33,13 +31,22 @@ class StorefrontController extends AbstractController
 
         $pizzas = $this->pizzaService->getListPizzas();
         return $this->render("main_page/main_page.html.twig", [
-            "pizzas" => $pizzas
+            "pizzas" => $pizzas,
+            "user" => $user
         ]);
     }
 
     public function order(Request $request): Response
     {
         return $this->redirectToRoute('order', [
-            'pizzaId' => $request->get('pizzaId')]);
+            'pizzaId' => $request->get('pizzaId')
+        ]);
+    }
+
+    public function deletePizza(Request $request): Response
+    {
+        $id = $request->get('pizzaId');
+        $this->pizzaService->deletePizza($id);
+        return $this->redirectToRoute('show_main_page');
     }
 }

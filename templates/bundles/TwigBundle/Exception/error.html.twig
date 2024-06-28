@@ -1,7 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block content %}
-    <h1>MyError</h1>
+{%  block head %}
+    {{ parent() }}
+    <link href="/styles/form_styles.css" rel="stylesheet">
+    <link href="/styles/error_styles.css" rel="stylesheet">
+{% endblock %}
 
-    <p>{{ status_text }}</p>
+{% block content %}
+    <div class="error">
+        <h1 class="error__title">Error {{ error.getStatusCode() }}</h1>
+        <p class="error__message">{{ error.getMessage() }}</p>
+    </div>
 {% endblock %}

@@ -1,6 +1,11 @@
 <main class="content">
     {% for pizza in pizzas %}
         <div class="content-block">
+            {% if user.getRoles() is same as('ROLE_ADMIN') %}
+                <a class="content-block__delete-button" href="{{ path('delete_pizza', { pizzaId: pizza.getPizzaId() }) }}">
+                    <img src="/images/recycle-bin.png" alt="Del">
+                </a>
+            {% endif %}
             <img class="content-block__image" src="{{ pizza.getPizzaImage() }}" alt="Pizza">
             <div class="content-block__info">
                 <span class="content-block__type"></span>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\UserRole;
 use App\Service\UserServiceInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,20 +35,19 @@ class LoginController extends AbstractController
     {
         $email = $request->get("email");
         $password = $request->get("password");
-
         $user = $this->userService->getUserByEmail($email);
+        $id = $user->getUserId();
 
         if (!$this->userService->isPasswordRight($user, $password))
         {
             throw new BadRequestException("Password is incorrect");
         }
-        if (!$this->userService->isAdmin($user))
+        if (!UserRole::isValidRole($user->getRoles()))
         {
             throw new BadRequestException("Role is incorrect");
         }
-        return $this->redirectToRoute("show_main_page", [
-            'id' => $user->getUserId()
-        ]);
+        SessionController::putIdInSession($id);
+        return $this->redirectToRoute("show_main_page");
     }
 
     public function signUp(AuthenticationUtils $authenticationUtils): Response
@@ -60,6 +60,7 @@ class LoginController extends AbstractController
 
     public function logout(): Response
     {
+        SessionController::destroySession();
         return $this->redirectToRoute('index');
     }
 }

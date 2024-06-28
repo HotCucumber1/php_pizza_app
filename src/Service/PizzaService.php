@@ -19,7 +19,7 @@ class PizzaService implements PizzaServiceInterface
                              int     $weight,
                              float   $price,
                              UploadedFile  $pizzaImage,
-                             ?string $pizzaType): int
+                             ?string $pizzaType = null): int
     {
         $img = $this->imageService->moveImageToUploads($pizzaImage, $pizzaName);
         $pizza = new Pizza(null,
@@ -50,5 +50,11 @@ class PizzaService implements PizzaServiceInterface
             throw new BadRequestException('Pizzas not found');
         }
         return $pizzas;
+    }
+
+    public function deletePizza(int $id): void
+    {
+        $pizza = $this->pizzaRepository->findPizzaById($id);
+        $this->pizzaRepository->delete($pizza);
     }
 }

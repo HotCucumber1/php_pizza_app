@@ -1,6 +1,6 @@
 .form {
     display: flex;
-    margin-top: 150px;
+    margin-block: 200px;
     margin-inline: auto;
     width: 600px;
     padding: 20px;
@@ -85,6 +85,13 @@
     transform: scale(0.96);
 }
 
+.form__avatar-name {
+    text-align: center;
+    color: var(--main-color);
+    font-size: 20px;
+    font-weight: 500;
+}
+
 .form__avatar-img {
     width: inherit;
     height: inherit;
@@ -92,4 +99,14 @@
 
 .form__avatar-img:active {
     transform: scale(0.96);
+}
+
+.thanks-string {
+    font-family: Godfather, sans-serif;
+    font-size: 120px;
+    font-weight: 400;
+    user-select: none;
+    letter-spacing: 1px;
+    color: darkred;
+    text-align: center;
 }

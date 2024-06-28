@@ -2,7 +2,7 @@
 
 {%  block head %}
     {{ parent() }}
-    <link href="/styles/main_page_styles.css" rel="stylesheet">
+    <link href="/styles/form_styles.css" rel="stylesheet">
 {% endblock %}
 
 {% block title %}Don Corleine{% endblock %}
@@ -16,12 +16,7 @@
     {% endif %}
 {% endblock %}
 
-{% block add_button %}
-    {% if user.getRoles() is same as('ROLE_ADMIN') %}
-        <a class="add-button" href="/add_pizza">Новая пицца</a>
-    {% endif %}
-{% endblock %}
 
 {% block content %}
-    {% include "main_page/main_page_content.html.twig" with [pizzas, user] %}
+    {% include "add_pizza/add_pizza_form.html.twig" %}
 {% endblock %}

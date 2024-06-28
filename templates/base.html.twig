@@ -13,18 +13,22 @@
 
 <body>
     <header class="header">
-        {% include "header.html.twig" %}
-        <!--<a href="/" class="logo">
-            <img class="logo-img" src="/images/pizza_icon.png" alt="Icon">
-            <p class="logo-text">Don Corleone</p>
-        </a>
-        <ul class="menu">
-            <li class="menu__item"><a class="menu__link" href="#">Акции</a></li>
-            <li class="menu__item"><a class="menu__link" href="#">Доставка</a></li>
-            <li class="menu__item"><a class="menu__link" href="#">О нас</a></li>
-        </ul>
-        <a href="/" class="job-button">Выйти</a>
-        <img class="user-icon" src="/images/pepperoni.png" alt="Icon">-->
+        {% block header %}
+            <a href="/main_page" class="logo">
+                <img class="logo-img" src="/images/pizza_icon.png" alt="Icon">
+                <p class="logo-text">Don Corleone</p>
+            </a>
+            <ul class="menu">
+                <li class="menu__item"><a class="menu__link" href="#">Акции</a></li>
+                <li class="menu__item"><a class="menu__link" href="#">Доставка</a></li>
+                <li class="menu__item"><a class="menu__link" href="#">О нас</a></li>
+            </ul>
+            {% block add_button %}{% endblock %}
+            <a href="/logout" class="job-button">Выйти</a>
+            {% block avatar %}
+                <img class="user-icon" src="/images/pepperoni.png" alt="Icon">
+            {% endblock %}
+        {% endblock %}
     </header>
 
     <main class="main">
