@@ -8,21 +8,29 @@ security:
         users_in_memory: { memory: null }
         user_provider:
             id: App\Security\UserProvider
-        app_user_provider:
+        users:
              entity:
-                class: App\Entity\User
-                property: email
+                class: 'App\Entity\User'
+                property: 'email'
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+            # remember_me: true
         main:
+            # pattern: ^/
             lazy: true
             provider: user_provider
+            # form_login:
+            #   login_path: sign_in
+            #    check_path: sign_in
+            #    csrf_token_generator: true
             custom_authenticator: App\Security\UserAuthenticator
             logout:
                 path: logout
                 target: /
+            remember_me: true
+            switch_user: true
     role_hierarchy:
         ROLE_ADMIN: ROLE_USER
 

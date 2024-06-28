@@ -10,8 +10,10 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class UserProvider implements UserProviderInterface
 {
-    public function __construct(private readonly UserRepository $userRepository)
+    private UserRepository $userRepository;
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
     }
 
     public function loadUserByUsername(string $username): UserInterface
@@ -57,9 +59,8 @@ class UserProvider implements UserProviderInterface
                                 $currentUser->getRoles());
     }
 
-    public function supportsClass(string $class)
+    public function supportsClass(string $class): bool
     {
-        return SecurityUser::class === $class ||
-                is_subclass_of($class, SecurityUser::class);
+        return SecurityUser::class === $class || is_subclass_of($class, SecurityUser::class);
     }
 }

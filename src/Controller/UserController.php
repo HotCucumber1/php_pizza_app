@@ -40,7 +40,12 @@ class UserController extends AbstractController
         {
             $this->userService->updateAvatar($request->files->get('avatar_path'), (string)$lastUserId);
         }
-        return $this->redirectToRoute('show_main_page');
+
+        $user = $this->userService->getUserById($lastUserId);
+
+        return $this->redirectToRoute('show_main_page', [
+            'id' => $lastUserId
+        ]);
     }
 
     public function findUser(Request $request): Response

@@ -45,7 +45,9 @@ class LoginController extends AbstractController
         {
             throw new BadRequestException("Role is incorrect");
         }
-        return $this->redirectToRoute("show_main_page");
+        return $this->redirectToRoute("show_main_page", [
+            'id' => $user->getUserId()
+        ]);
     }
 
     public function signUp(AuthenticationUtils $authenticationUtils): Response
