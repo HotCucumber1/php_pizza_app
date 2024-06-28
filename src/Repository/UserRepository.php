@@ -39,9 +39,4 @@ class UserRepository
         $this->entityManager->remove($user);
         $this->entityManager->flush();
     }
-
-    public function findUsersList(): array
-    {
-        return $this->repository->findAll();
-    }
 }

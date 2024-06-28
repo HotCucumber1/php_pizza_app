@@ -86,56 +86,12 @@ class UserService implements UserServiceInterface
         return UserRole::isAdmin($user->getRoles());
     }
 
-    public function deleteUser(int $userId): void
-    {
-        $user = $this->userRepository->findUserById($userId);
-        $this->userRepository->delete($user);
-    }
-
     public function updateAvatar(UploadedFile $avatar, int $userId): void
     {
         $user = $this->userRepository->findUserById($userId);
         $avatarPath = $this->imageService->moveImageToUploads($avatar, (string)$userId);
         $user->setAvatarPath($avatarPath);
         $this->userRepository->store($user);
-    }
-
-    public function updateUser(int $userId,
-                               string $name,
-                               string $lastName,
-                               string $email,
-                               ?string $phone,
-                               ?UploadedFile $avatar): User
-    {
-        $user = $this->userRepository->findUserById($userId);
-        if (is_null($user))
-        {
-            throw new BadRequestException("User not found");
-        }
-
-        $user->setFirstName($name);
-        $user->setLastName($lastName);
-        $user->setEmail($email);
-        $user->setPhone($phone);
-
-        if ($avatar)
-        {
-            $avatarPath = $this->imageService->moveImageToUploads($avatar, (string)$userId);
-            $user->setAvatarPath($avatarPath);
-        }
-
-        $this->userRepository->store($user);
-        return $user;
-    }
-
-    public function getListUsers(): array
-    {
-        $users = $this->userRepository->findUsersList();
-        if (!$users)
-        {
-            throw new BadRequestException('Users not found');
-        }
-        return $users;
     }
 
     private function isValid(string $name,

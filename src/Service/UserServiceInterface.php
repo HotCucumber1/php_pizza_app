@@ -19,14 +19,5 @@ interface UserServiceInterface
     public function getUserByEmail(string $email): User;
     public function isPasswordRight(User $user, string $password): bool;
     public function isAdmin(User $user): bool;
-    public function deleteUser(int $userId): void;
-    public function getListUsers(): array;
-    public function updateUser(int $userId,
-                               string $name,
-                               string $lastName,
-                               string $email,
-                               ?string $phone,
-                               UploadedFile $avatar): User;
-
     public function updateAvatar(UploadedFile $avatar, int $userId): void;
 }

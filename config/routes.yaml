@@ -18,11 +18,6 @@ login:
     methods: POST
     controller: App\Controller\LoginController::signIn
 
-check_user:
-    path: /check
-    methods: POST
-    controller: App\Controller\UserController::findUser
-
 upload_user:
     path: /user_upload
     methods: POST
@@ -32,11 +27,6 @@ show_main_page:
     path: /main_page
     methods: GET
     controller: App\Controller\StorefrontController::index
-
-test:
-    path: /test
-    methods: GET
-    controller: App\Controller\UserController::test
 
 make_order:
     path: /make_order
