@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class AddPizzaController extends AbstractController
+class PizzaController extends AbstractController
 {
     public function __construct(private readonly PizzaServiceInterface $pizzaService,
                                 private readonly UserServiceInterface $userService)
@@ -33,11 +33,9 @@ class AddPizzaController extends AbstractController
         $weight = $request->get('weight');
         $price = $request->get('price');
         $image = $request->files->get('image');
-        // $type = $request->get('type');
 
-
-
-        if ($pizzaName === '' || $definition === '' || $weight === '' || $price === '' || !$image)
+        if ($pizzaName === '' || $definition === '' ||
+            $weight === '' || $price === '' || !$image)
         {
             throw new BadRequestException("All fields must be filled in");
         }
@@ -47,6 +45,13 @@ class AddPizzaController extends AbstractController
                                       $weight,
                                       $price,
                                       $image);
+        return $this->redirectToRoute('show_main_page');
+    }
+
+    public function deletePizza(Request $request): Response
+    {
+        $id = $request->get('pizzaId');
+        $this->pizzaService->deletePizza($id);
         return $this->redirectToRoute('show_main_page');
     }
 }

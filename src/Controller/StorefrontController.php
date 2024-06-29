@@ -42,11 +42,4 @@ class StorefrontController extends AbstractController
             'pizzaId' => $request->get('pizzaId')
         ]);
     }
-
-    public function deletePizza(Request $request): Response
-    {
-        $id = $request->get('pizzaId');
-        $this->pizzaService->deletePizza($id);
-        return $this->redirectToRoute('show_main_page');
-    }
 }

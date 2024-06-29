@@ -18,7 +18,6 @@ class OrderController extends AbstractController
     public function index(Request $request): Response
     {
         $pizzaId = $request->get('pizzaId');
-        $pizza = $this->pizzaService->getPizza($pizzaId);
 
         SessionController::putPizzaInStorage($pizzaId);
 

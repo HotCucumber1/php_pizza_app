@@ -32,10 +32,9 @@ class UserService implements UserServiceInterface
                             $phone,
                             $password))
         {
-            throw new \InvalidArgumentException("User data is not valid");
+            throw new BadRequestException("User data is not valid");
         }
         $existingUser = $this->userRepository->findUserByEmail($email);
-
         if ($existingUser)
         {
             throw new \InvalidArgumentException('User with email "' . $email . '" has already been registered');
@@ -103,7 +102,7 @@ class UserService implements UserServiceInterface
         if (trim($name) === '' ||
             trim($lastName) === '' ||
             trim($email) === '' ||
-            trim($password) == '')
+            trim($password) === '')
         {
             return false;
         }

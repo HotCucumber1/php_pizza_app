@@ -46,17 +46,17 @@ thanks:
 add_pizza:
     path: /add_pizza
     methods: GET
-    controller: App\Controller\AddPizzaController::index
+    controller: App\Controller\PizzaController::index
 
 store_pizza:
     path: /store_pizza
     methods: POST
-    controller: App\Controller\AddPizzaController::add
+    controller: App\Controller\PizzaController::add
 
 delete_pizza:
     path: /delete_pizza
     methods: GET
-    controller: App\Controller\StorefrontController::deletePizza
+    controller: App\Controller\PizzaController::deletePizza
 
 basket:
     path: /basket

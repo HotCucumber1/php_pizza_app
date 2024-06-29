@@ -4,7 +4,6 @@ namespace App\Service;
 
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\InvalidArgumentException;
-use http\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ImageService implements ImageServiceInterface
@@ -15,7 +14,7 @@ class ImageService implements ImageServiceInterface
                                             'jpg'];
     private const UPLOADS_PATH = "./uploads";
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct()
     {
     }
 
